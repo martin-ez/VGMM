@@ -10,28 +10,32 @@ namespace HexGridMap
     /// </summary>
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
+    [RequireComponent(typeof(MeshCollider))]
     public class HexTileRenderer : MonoBehaviour
     {
         private Mesh mesh;
         private MeshFilter mFilter;
         private MeshRenderer mRenderer;
+        private MeshCollider mCollider;
         private List<MeshFace> mFaces;
 
         private void Awake()
         {
             mFilter = GetComponent<MeshFilter>();
             mRenderer = GetComponent<MeshRenderer>();
+            mCollider = GetComponent<MeshCollider>();
 
             mesh = new Mesh
             {
                 name = "HexTile"
             };
             mFilter.mesh = mesh;
+            mCollider.sharedMesh = mesh;
         }
 
         public void DrawMesh(float size, float height, Material material)
         {
-            mRenderer.material = material;
+            mRenderer.sharedMaterial = material;
             mesh.Clear();
             DrawMeshFaces(size, height);
             CombineMeshFaces();

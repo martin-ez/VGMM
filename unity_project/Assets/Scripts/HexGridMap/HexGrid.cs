@@ -6,17 +6,7 @@ namespace HexGridMap
 {
     public class HexGrid : MonoBehaviour
     {
-        [Header("Selectable tiles")] [SerializeField]
-        public Material selectableMaterial;
-
-        [SerializeField] public float selectableSize = 9f;
-        [SerializeField] public float selectableHeight = 0f;
-
-        [Header("Active tiles")] [SerializeField]
-        public Material activeMaterial;
-
-        [SerializeField] public float activeSize = 10f;
-        [SerializeField] public float activeHeight = 1f;
+        [Header("Tiles")] [SerializeField] public GameObject tilePrefab;
 
         private Dictionary<String, HexTile> grid;
 
@@ -44,20 +34,12 @@ namespace HexGridMap
 
         private HexTile CreateTile(Vector2Int coordinates, HexTileState state, bool animated)
         {
-            GameObject tileObject = new GameObject($"Tile:{coordinates.x}:{coordinates.y}");
-            tileObject.transform.SetParent(transform);
-            tileObject.AddComponent<MeshFilter>();
-            tileObject.AddComponent<MeshRenderer>();
-            tileObject.AddComponent<HexTileRenderer>();
-            HexTile tile = tileObject.AddComponent<HexTile>();
+            GameObject tileObject = Instantiate(tilePrefab, Vector3.down, Quaternion.identity, transform);
+            tileObject.name = $"Tile:{coordinates.x}:{coordinates.y}";
+            HexTile tile = tileObject.GetComponent<HexTile>();
             tile.state = state;
-            tile.SetCoordinates(coordinates, activeSize);
-            tile.DrawTile(
-                state == HexTileState.Selectable ? selectableSize : activeSize,
-                state == HexTileState.Selectable ? selectableHeight : activeHeight,
-                state == HexTileState.Selectable ? selectableMaterial : activeMaterial,
-                animated
-            );
+            tile.SetCoordinates(coordinates);
+            tile.DrawTile(animated);
             return tile;
         }
     }

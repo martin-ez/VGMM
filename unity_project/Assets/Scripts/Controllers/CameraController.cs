@@ -25,14 +25,14 @@ namespace Controllers
         private Vector3 targetZoom;
         private Transform cameraTransform;
 
-        private CameraControls.CameraActions controlScheme;
+        private ControlScheme.CameraActions controlScheme;
         private Camera rigCamera;
         private Vector3 dragTargetStart;
         private Vector3 dragTargetCurrent;
 
         private void Awake()
         {
-            controlScheme = new CameraControls().Camera;
+            controlScheme = new ControlScheme().Camera;
             rigCamera = GetComponentInChildren<Camera>();
             cameraTransform = rigCamera.transform;
             targetPosition = transform.position;

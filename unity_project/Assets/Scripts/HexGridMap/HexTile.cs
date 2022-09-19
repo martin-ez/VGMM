@@ -1,4 +1,5 @@
 using System;
+using Controllers;
 using UnityEngine;
 
 namespace HexGridMap
@@ -9,11 +10,23 @@ namespace HexGridMap
     /// Algorithms are based on the detailed guide from Red Blob Games: https://www.redblobgames.com/grids/hexagons/
     /// </summary>
     [RequireComponent(typeof(HexTileRenderer))]
-    public class HexTile : MonoBehaviour
+    public class HexTile : PointerSelectable
     {
-        public HexTileState state = HexTileState.Inactive;
-        private Vector2Int coordinates = Vector2Int.zero;
+        [Header("Selectable tiles")] [SerializeField]
+        public Material selectableMaterial;
 
+        [SerializeField] public float selectableSize = 9f;
+        [SerializeField] public float selectableHeight = 0f;
+
+        [Header("Active tiles")] [SerializeField]
+        public Material activeMaterial;
+
+        [SerializeField] public float activeSize = 10f;
+        [SerializeField] public float activeHeight = 1f;
+
+        [Header("State")] [SerializeField] public HexTileState state = HexTileState.Inactive;
+
+        private Vector2Int coordinates = Vector2Int.zero;
         private HexTileRenderer hRenderer;
 
         public static readonly Vector2Int[] Neighbors =
@@ -36,13 +49,13 @@ namespace HexGridMap
             return $"{coordinates.x}:{coordinates.y}";
         }
 
-        public void SetCoordinates(Vector2Int nCoordinates, float gridSize)
+        public void SetCoordinates(Vector2Int nCoordinates)
         {
             coordinates = nCoordinates;
             float q = coordinates.x;
             float r = coordinates.y;
-            float width = gridSize * Mathf.Sqrt(3);
-            float height = gridSize * 2f;
+            float width = activeSize * Mathf.Sqrt(3);
+            float height = activeSize * 2f;
             bool offset = r % 2 != 0;
             transform.localPosition = new Vector3(
                 q * width + Mathf.Sign(r) * (offset ? width / 2f : 0),
@@ -51,16 +64,39 @@ namespace HexGridMap
             );
         }
 
-        public void DrawTile(float size, float height, Material material, bool animated)
+        public void DrawTile(bool animated)
         {
-            if (hRenderer != null && !animated)
+            if (hRenderer != null)
             {
-                hRenderer.DrawMesh(size, height, material);
+                float size = state == HexTileState.Selectable ? selectableSize : activeSize;
+                float height = state == HexTileState.Selectable ? selectableHeight : activeHeight;
+                Material material = state == HexTileState.Selectable ? selectableMaterial : activeMaterial;
+
+                if (animated) AnimateDrawMesh(size, height, material);
+                else hRenderer.DrawMesh(size, height, material);
             }
-            else
-            {
-                // TODO: Create an animation
-            }
+        }
+
+        private void AnimateDrawMesh(float size, float height, Material material)
+        {
+            // TODO: Create an animation
+        }
+
+        protected override void OnPointerClick()
+        {
+            Debug.Log($"Hex: ${GetCoordinatesId()} - Pointer click");
+        }
+
+        protected override void OnPointerEnter()
+        {
+            Debug.Log($"Hex: ${GetCoordinatesId()} - Pointer enter");
+            GetComponent<MeshRenderer>().material.color = Color.black;
+        }
+
+        protected override void OnPointerExit()
+        {
+            Debug.Log($"Hex: ${GetCoordinatesId()} - Pointer exit");
+            GetComponent<MeshRenderer>().material.color = selectableMaterial.color;
         }
     }
 
