@@ -124,10 +124,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0061ff9e76046d3b841d11e87b3635d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableMaterial: {fileID: 2100000, guid: 871a45fb07a5a446e9142d7e66c91a73, type: 2}
-  selectableSize: 9.8
-  selectableHeight: 0
-  activeMaterial: {fileID: 2100000, guid: 741125bb61d7148b3b0ecde22ae12eec, type: 2}
+  selectableMaterial: {fileID: 2100000, guid: 1f9d8f0cee4274f97ad89164cd128969, type: 2}
+  selectableSize: 10
+  selectableHeight: 1
+  activeMaterial: {fileID: 2100000, guid: 89fd8afb46ad2498283aa8291584d563, type: 2}
   activeSize: 10
-  activeHeight: 1
+  activeHeight: 2
   state: 0

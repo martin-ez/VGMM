@@ -10,7 +10,9 @@ namespace Controllers
     /// </summary>
     public class CameraController : MonoBehaviour
     {
-        [Header("Translation")] [SerializeField] private float normalSpeed = 0.3f;
+        [Header("Translation")] [SerializeField]
+        private float normalSpeed = 0.3f;
+
         [SerializeField] private float fastSpeed = 0.8f;
         [SerializeField] private float movementTime = 10f;
 
@@ -90,7 +92,8 @@ namespace Controllers
         private void UpdateRigTransform()
         {
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * movementTime);
-            cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, targetZoom, Time.deltaTime * movementTime);
+            cameraTransform.localPosition =
+                Vector3.Lerp(cameraTransform.localPosition, targetZoom, Time.deltaTime * movementTime);
             cameraTransform.LookAt(transform);
         }
 

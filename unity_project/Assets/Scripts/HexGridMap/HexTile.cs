@@ -90,13 +90,11 @@ namespace HexGridMap
         protected override void OnPointerEnter()
         {
             Debug.Log($"Hex: ${GetCoordinatesId()} - Pointer enter");
-            GetComponent<MeshRenderer>().material.color = Color.black;
         }
 
         protected override void OnPointerExit()
         {
             Debug.Log($"Hex: ${GetCoordinatesId()} - Pointer exit");
-            GetComponent<MeshRenderer>().material.color = selectableMaterial.color;
         }
     }
 
